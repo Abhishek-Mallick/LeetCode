@@ -1,61 +1,47 @@
 class Solution {
+    
+    private Set<Integer> colIndex = new HashSet<Integer>();
+    private Set<Integer> degree45 = new HashSet<Integer>();
+    private Set<Integer> degree135 = new HashSet<Integer>();
+    
+    private int count = 0;
+    
     public int totalNQueens(int n) {
-        List<List<String>> ans = new ArrayList<List<String>>();
-        
-        char arr[][] = new char[n][n];
-        for(int i=0;i<n;i++)
-            for(int j=0;j<n;j++)
-                arr[i][j] = '.';
-        
-        queenTry(ans,arr,0);
-        return ans.size();
+        validCounter(n,0);
+        return count;
     }
-    private void queenTry(List<List<String>> ans, char[][] arr, int row)
+    
+    public void validCounter(int n, int row)
     {
-        if(row == arr.length)
+        if(row == n)
         {
-            ans.add(build(arr));
+            count++;
             return;
         }
-        for(int col=0;col<arr.length;col++)
+        else
         {
-            if(validatePosition(arr,row,col))
+            for(int col=0;col<n;col++)
             {
-                arr[row][col] = 'Q';
-                queenTry(ans,arr,row+1);
-                arr[row][col] = '.'; 
+                if(validPosition(row,col))
+                {
+                    colIndex.add(col);
+                    degree135.add(row-col);
+                    degree45.add(row+col);
+                    
+                    validCounter(n,row+1);  //recursive calling
+                    
+                    colIndex.remove(col);
+                    degree135.remove(row-col);
+                    degree45.remove(row+col);
+                }
             }
         }
     }
-    
-    private boolean validatePosition(char[][] arr,int row,int col)
+    private boolean validPosition(int row,int col)
     {
-        //checks validity in every row for a single column
-        for(int i=0;i<row;i++)
-        {
-            if(arr[i][col] == 'Q')
-                return false;
-        }
-        //checks for every 45 degree angle
-        for(int i=row-1,j=col+1;i>=0 && j<arr.length;i--,j++)
-        {
-            if(arr[i][j] == 'Q')
-                return false;
-        }
-        //checks for every 135 degree angle
-        for(int i=row-1,j=col-1;i>=0 && j>=0;i--,j--)
-        {
-            if(arr[i][j] == 'Q')
-                return false;
-        }
-        return true;
-    }
-    
-    private List<String> build(char arr[][])
-    {
-        List<String> val = new ArrayList<>();
-        for(int i=0;i<arr.length;i++)
-            val.add(new String(arr[i]));
-        return val;
+        if(colIndex.contains(col) || degree135.contains(row-col) || degree45.contains(row+col))
+            return false;
+        else
+            return true;
     }
 }
