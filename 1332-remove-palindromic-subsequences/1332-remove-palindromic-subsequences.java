@@ -1,5 +1,19 @@
 class Solution {
     public int removePalindromeSub(String s) {
-        return s.isEmpty() ? 0:(s.equals(new StringBuilder(s).reverse().toString())?1:2);
+         if(s == null || s.length() == 0)
+            return 0;
+        int i=0;
+        int j=s.length()-1;
+        while(i<j)
+        {
+            if(s.charAt(i) == s.charAt(j))
+            {
+                i++;
+                j--;
+            }
+            else
+                return 2;
+        }
+        return 1;
     }
 }
