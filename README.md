@@ -1,5 +1,5 @@
 # LeetCode
-**This repo will contain all my problem solutions and discussions on LeetCode**
+**This repo contains all my problem solutions and discussions made by me on LeetCode**
 
 **Profile Link  --> https://leetcode.com/Abhishek-2003/**
 
