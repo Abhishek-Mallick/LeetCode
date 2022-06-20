@@ -1,29 +1,14 @@
 class Solution {
     public int minimumLengthEncoding(String[] words) {
-        
-        Set<String> wordSet = new HashSet<>(Arrays.asList(words));
-        Set<String> temp = new HashSet<>();
-        List<String> wordList = new ArrayList(wordSet);
-        
-        for(int i=0;i<wordList.size();i++)
+        Set<String> set = new HashSet(Arrays.asList(words));
+        for(String word : words)
         {
-            for(int j=0;j<wordList.size();j++)
-            {
-                if(i != j)
-                {
-                    if(wordList.get(i).endsWith(wordList.get(j)))
-                        temp.add(wordList.get(j));
-                }
-            }
+            for(int i=1;i<word.length();i++)
+                set.remove(word.substring(i));
         }
         int count = 0;
-        for(String word : wordList)
-        {
-            if(!temp.contains(word))
-            {
-                count += word.length()+1;
-            }
-        }
+        for(String word : set)
+            count += word.length()+1;
         return count;
     }
 }
