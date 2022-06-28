@@ -3,16 +3,19 @@ class Solution {
         int frequency[] = new int[26];
         for(int i=0;i<s.length();i++)
             frequency[s.charAt(i)-'a']++;
+        Arrays.sort(frequency);
+        
         int delCount = 0;
-        HashSet<Integer> seen = new HashSet<>();
-        for(int i=0;i<26;i++)
+        int maxLimit = s.length();
+        
+        for(int i=25;i>=0 && frequency[i]>0;i--)
         {
-            while(frequency[i]>0 && seen.contains(frequency[i]))
+            if(frequency[i] > maxLimit)
             {
-                frequency[i]--;
-                delCount++;
+                delCount += frequency[i]-maxLimit;
+                frequency[i] = maxLimit;
             }
-            seen.add(frequency[i]);
+            maxLimit = Math.max(0,frequency[i]-1);
         }
         return delCount;
     }
