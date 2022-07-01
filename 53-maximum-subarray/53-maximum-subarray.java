@@ -1,16 +1,25 @@
 class Solution {
     public int maxSubArray(int[] nums) {
-        int curr,max;
-        curr = nums[0];
-        max = nums[0];
-        for(int i=1;i<nums.length;i++)
+        ArrayList<Integer> arr = new ArrayList<>();
+        int msf = nums[0];
+        int meh = 0;
+        int sum = 0;
+        for(int i=0;i<nums.length;i++)
         {
-            if(curr<0)
-                curr = 0;
-            curr = curr + nums[i];
-            if(curr>max)
-                max = curr;
+            meh = meh + nums[i];
+            if(meh > msf)
+            {
+                arr.clear();
+                msf = meh;
+                arr.add(sum);
+                arr.add(i);
+            }
+            if(meh<0)
+            {
+                meh = 0;
+                sum = i+1;
+            }
         }
-        return max;
+        return msf;
     }
 }
