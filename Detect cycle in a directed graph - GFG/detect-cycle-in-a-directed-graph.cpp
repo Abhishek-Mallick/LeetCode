@@ -4,46 +4,43 @@ using namespace std;
 
 // } Driver Code Ends
 class Solution {
-    private:
-    bool dfsCheck(int node,vector<int> adj[],int vis[], int pathvis[])
-    {
-        vis[node] = 1;
-        pathvis[node] = 1;
-        
-        //traversal for adjacent nodes
-        for(auto it : adj[node])
-        {
-            if(!vis[it])
-            {
-                if(dfsCheck(it,adj,vis,pathvis) == true)
-                    return true;
-            }
-            else if(vis[it] == 1 && pathvis[it] == 1)
-            {
-                // if the node has been visited prviously
-                // but has not been visited on the same path
-                return true;
-            }
-        }
-        
-        pathvis[node] = 0;
-        return false;
-    }
   public:
     // Function to detect cycle in a directed graph.
     bool isCyclic(int V, vector<int> adj[]) {
-        int vis[V] = {0};
-        int pathvis[V] = {0};
+        int indegree[V] = {0};
+        queue<int> q;
+        for(int i=0;i<V;i++)
+        {
+            for(auto it : adj[i])
+                indegree[it]++;
+        }
         
         for(int i=0;i<V;i++)
         {
-            if(!vis[i])
+            if(indegree[i] == 0)
+                q.push(i);
+        }
+        
+        vector<int> topo;
+        while(!q.empty())
+        {
+            int node = q.front();
+            q.pop();
+            topo.push_back(node);
+            
+            for(auto it : adj[node])
             {
-                if(dfsCheck(i,adj,vis,pathvis) == true)
-                    return true;
+                indegree[it]--;
+                if(indegree[it] == 0)
+                    q.push(it);
             }
         }
-        return false;
+        
+        
+        if(topo.size() == V)
+            return false;
+        else
+            return true;
     }
 };
 
