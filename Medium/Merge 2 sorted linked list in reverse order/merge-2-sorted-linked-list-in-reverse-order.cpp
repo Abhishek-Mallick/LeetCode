@@ -43,54 +43,95 @@ struct Node
 class Solution
 {
     public:
+    Node * reverse(Node * node){
+        Node * prev = nullptr;
+        
+        while(node){
+            Node * next = node -> next;
+            node -> next = prev;
+            prev = node;
+            node = next;
+        }
+        
+        return prev;
+    }
     
     struct Node * mergeResult(Node *node1,Node *node2)
     {
-        Node *result = NULL;
-        while(node1!=NULL&&node2!=NULL)
-        {
-            // comparing values of nodes to determine order of merging
-            if(node1->data<=node2->data)
-            {
-                // merging node1 with the result list
-                Node *temp = node1->next;
-                node1->next = result;
-                result = node1;
-    
-                // moving to the next node in node1 list
-                node1=temp;
-            }else{
-                // merging node2 with the result list
-                Node *temp = node2->next;
-                node2->next=result;
-                result = node2;
-    
-                // moving to the next node in node2 list
-                node2=temp;
+        node1 = reverse(node1);
+        node2 = reverse(node2);
+        
+        Node *newHead = NULL;
+        Node *curNode = NULL;
+        
+        while(node1 and node2){
+            if(node1 -> data > node2 -> data){
+                if(!curNode){
+                    curNode = new Node;
+                    curNode -> data = node1 -> data;
+                    newHead = curNode;
+                }
+                else{
+                    Node * newNode = new Node;
+                    newNode -> data = node1 -> data;
+                    
+                    curNode -> next = newNode;
+                    curNode = newNode;
+                }
+                
+                node1 = node1 -> next;
+            }
+            else{
+                if(!curNode){
+                    curNode = new Node;
+                    curNode -> data = node2 -> data;
+                    newHead = curNode;
+                }
+                else{
+                    Node * newNode = new Node;
+                    newNode -> data = node2 -> data;
+                    curNode -> next = newNode;
+                    curNode = newNode;
+                }   
+                
+                node2 = node2 -> next;
             }
         }
-    
-        //Check if any list finished first and merge remaining nodes
-    
-        while(node1!=NULL)
-        {
-            // merging remaining nodes in node1 list with the result list
-            Node *temp = node1->next;
-            node1->next = result;
-            result= node1;
-            node1 = temp;
+        
+        while(node1){
+            if(!curNode){
+                curNode = new Node;
+                curNode -> data = node1 -> data;
+                newHead = curNode;
+            }
+            else{
+                Node * newNode = new Node;
+                newNode -> data = node1 -> data;
+                curNode -> next = newNode;
+                curNode = newNode;
+            }  
+            
+            node1 = node1 -> next;
         }
-    
-        while(node2!=NULL)
-        {
-            // merging remaining nodes in node2 list with the result list
-            Node *temp = node2->next;
-            node2->next = result;
-            result = node2;
-            node2 = temp;
+        
+        while(node2){
+            if(!curNode){
+                curNode = new Node;
+                curNode -> data = node2 -> data;
+                newHead = curNode;
+            }
+            else{
+                Node * newNode = new Node;
+                newNode -> data = node2 -> data;
+                curNode -> next = newNode;
+                curNode = newNode;
+            }  
+            
+            node2 = node2 -> next;
         }
-        // returning the final merged list
-        return result;
+
+        
+        return newHead;
     }  
 };
 
