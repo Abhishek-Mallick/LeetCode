@@ -1,10 +1,20 @@
 class Solution {
 public:
     string customSortString(string order, string s) {
-        auto comp = [&](char a, char b) {
-            return order.find(a) < order.find(b);
-        };
-        sort(s.begin(),s.end(),comp);
-        return s;
+        unordered_map<char,int> freq;
+        for(auto el : s)
+            freq[el]++;
+        
+        string ans = "";
+        for(auto el : order) {
+            while(freq[el]-- > 0)
+                ans.push_back(el);
+        }
+
+        for(auto [el,fr] : freq) {
+            while(fr-- > 0)
+                ans.push_back(el);
+        }
+        return ans;
     }
 };
