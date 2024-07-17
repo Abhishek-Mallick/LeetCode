@@ -44,13 +44,32 @@ public:
         currPath.pop_back();
     }
     string getDirections(TreeNode* root, int startValue, int destValue) {
-        TreeNode* lcaNode = lca(root,startValue,destValue);
-        string currPath = "";
-        dfs(lcaNode, currPath, startValue, destValue);
+        // TreeNode* lcaNode = lca(root,startValue,destValue);
+        // string currPath = "";
+        // dfs(lcaNode, currPath, startValue, destValue);
 
+        // for(char& ch : lcaToStart)
+        //     ch = 'U';
+        
+        // return lcaToStart + lcaToEnd;
+
+        string currPath = "";
+        dfs(root,currPath,startValue,destValue);
+        int commonLen = 0;
+        
+        for(int i=0;i<min(lcaToStart.size(),lcaToEnd.size());i++)
+        {
+            if(lcaToStart[i] == lcaToEnd[i])
+                commonLen++;
+            else
+                break;
+        }
+
+        lcaToStart = lcaToStart.substr(commonLen,lcaToStart.size());
+        lcaToEnd = lcaToEnd.substr(commonLen,lcaToEnd.size());
         for(char& ch : lcaToStart)
             ch = 'U';
-        
+
         return lcaToStart + lcaToEnd;
     }
 };
